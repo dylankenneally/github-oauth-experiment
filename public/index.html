@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>GitHub OAuth Experiment</title>
+	</head>
+	<body>
+		<style>
+			#login {
+				display: none;
+			}
+		</style>
+		<div id="loading">
+			<p>Getting ready, please wait</p>
+		</div>
+		<div id="login">
+			<a id="login-anchor">Login with your GitHub account</a>
+		</div>
+
+		<script>
+			function main() {
+				// get the client ID for our application
+				fetch('oauth/client-id')
+					.then(data => data.json())
+					.then(data => {
+						const oAuthApi = 'https://github.com/login/oauth/authorize';
+						const scope = 'user:email'; // requesting the users email address
+						const url = `${oAuthApi}?scope=${scope}&client_id=${data.clientId}`;
+						document.getElementById('login-anchor').href = url;
+						document.getElementById('loading').style.display = 'none';
+						document.getElementById('login').style.display = 'unset';
+					})
+					.catch(error => console.error(error));
+			}
+			main();
+		</script>
+	</body>
+</html>
